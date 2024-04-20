@@ -6,4 +6,4 @@ Resvolt is a fork of [Ruvolt](https://github.com/Arthur-Damasceno/ruvolt), anoth
 
 ## License
 
-The fork and this project is both licensed under the [MIT License](https://mit-license.org/)
+The fork and this project are both licensed under the [MIT License](https://mit-license.org/)
