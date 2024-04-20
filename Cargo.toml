@@ -1,0 +1,48 @@
+[package]
+name = "resvolt"
+description = "A Rust-based API wrapper for the Revolt chat platform"
+version = "0.1.0"
+authors = ["Asudox <developer@asudox.dev>"]
+repository = "https://github.com/Asudox/resvolt"
+license = "MIT"
+edition = "2021"
+
+[features]
+default = ["cache", "state", "msgpack"]
+cache = []
+state = []
+msgpack = ["rmp-serde"]
+
+[dependencies]
+# Async
+tokio = { version = "1.37.0", features = ["time", "rt-multi-thread", "sync"] }
+futures-util = "0.3.30"
+async-trait = "0.1.80"
+
+# WebSocket
+tokio-tungstenite = { version = "0.21.0", features = [
+    "rustls-tls-webpki-roots",
+] }
+
+# Serde
+serde = { version = "1.0.197", features = ["derive"] }
+serde_json = "1.0.115"
+rmp-serde = { version = "1.1.2", optional = true }
+
+# Miscellaneous
+thiserror = "1.0.58"
+bitflags = { version = "2.5.0", features = ["serde"] }
+tracing = "0.1.40"
+anyhow = "1.0.82"
+ahash = { version = "0.8.11", features = ["serde"] }
+governor = "0.6.3"
+lazy_static = "1.4.0"
+
+# HTTP
+[dependencies.reqwest]
+version = "0.12.3"
+default-features = false
+features = ["rustls-tls", "json"]
+
+[dev-dependencies]
+tokio = { version = "1.37.0", features = ["macros"] }
