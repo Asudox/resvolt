@@ -62,6 +62,38 @@ impl Channel {
             .delete(format!("channels/{}", channel_id))
             .await
     }
+
+    pub fn get_text_channel(self) -> Option<TextChannel>{
+        if let Self::Text(TextChannel) = self {
+            Some(TextChannel)
+        } else {
+            None
+        }
+    }
+
+    pub fn get_voice_channel(self) -> Option<VoiceChannel>{
+        if let Self::Voice(VoiceChannel) = self {
+            Some(VoiceChannel)
+        } else {
+            None
+        }
+    }
+
+    pub fn get_group_channel(self) -> Option<GroupChannel>{
+        if let Self::Group(GroupChannel) = self {
+            Some(GroupChannel)
+        } else {
+            None
+        }
+    }
+
+    pub fn get_dm_channel(self) -> Option<DirectMessageChannel>{
+        if let Self::DirectMessage(DirectMessageChannel) = self {
+            Some(DirectMessageChannel)
+        } else {
+            None
+        }
+    }
 }
 
 #[cfg(feature = "cache")]
