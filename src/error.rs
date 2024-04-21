@@ -1,4 +1,4 @@
-//! Module for [enum@Error] and [Result] types.
+//! Module for [derive@Error] and [Result] types.
 
 use {
     crate::models::RevoltPermission, reqwest::Error as HttpError, serde::Deserialize,

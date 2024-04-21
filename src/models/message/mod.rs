@@ -55,7 +55,7 @@ pub struct Message {
 }
 
 impl Message {
-    /// Get a message from the API.
+    /// Get a [`Message`] from the API.
     pub async fn fetch(ctx: &Context, channel_id: &ID, id: &ID) -> Result<Self> {
         let path = format!("channels/{}/messages/{}", channel_id, id);
         let msg = ctx.http_client.get(&path).await?;
@@ -63,7 +63,7 @@ impl Message {
         Ok(msg)
     }
 
-    /// Creates a new [`Message`] in the specified channel ID.
+    /// Creates a new [`Message`] in the specified channel ID from a [`CreateMessage`] builder
     pub async fn create(ctx: &Context, channel_id: &ID, builder: CreateMessage) -> Result<Self> {
         let path = format!("channels/{}/messages", channel_id);
         let msg = ctx.http_client.post(&path, builder).await?;
@@ -71,9 +71,14 @@ impl Message {
         Ok(msg)
     }
 
-    /// Returns whether the message has been edited.
+    /// Whether the [`Message`] has been edited or not.
     pub fn is_edited(&self) -> bool {
         self.edited.is_some()
+    }
+
+    /// Whether the [`Message`] is a variant of [`SystemMessage`] or not.
+    pub fn is_system(&self) -> bool {
+        matches!(self.content, Content::SystemMessage(_))
     }
 
     /// Convenience method that calls the associated [`create`](Self::create) function with the channel ID taken from self.
@@ -87,7 +92,7 @@ impl Message {
         Self::create(ctx, &self.channel_id, builder.into()).await
     }
 
-    /// Reply to the message.
+    /// Reply to the [`Message`].
     pub async fn reply(
         &self,
         ctx: &Context,
@@ -102,7 +107,7 @@ impl Message {
         .await
     }
 
-    /// Edit the message.
+    /// Edit the [`Message`].
     pub async fn edit(&mut self, ctx: &Context, builder: impl Into<EditMessage>) -> Result<()> {
         // TODO: Update local message.
         let path = format!("channels/{}/messages/{}", self.channel_id, self.id);
@@ -111,7 +116,7 @@ impl Message {
         Ok(())
     }
 
-    /// Delete the message.
+    /// Delete the [`Message`].
     pub async fn delete(&self, ctx: &Context) -> Result<()> {
         let path = format!("channels/{}/messages/{}", self.channel_id, self.id);
         ctx.http_client.delete(&path).await?;
@@ -119,7 +124,7 @@ impl Message {
         Ok(())
     }
 
-    /// Delete the message after the specified delay is over.
+    /// Delete the [`Message`] after the specified delay is over.
     pub async fn delete_after(&self, ctx: &Context, delay: Duration) -> Result<()> {
         tokio::time::sleep(delay).await;
 
